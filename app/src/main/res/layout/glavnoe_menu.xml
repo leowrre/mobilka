@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Список (занимает всё свободное место благодаря layout_weight="1" и height="0dp") -->
+    <!-- Добавил android:id="@+id/recyclerView", чтобы твой прошлый Java-код с ним работал -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF" />
+
+    <!-- Кнопки внизу -->
+    <Button
+        android:id="@+id/dobavit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Добавить" />
+
+    <Button
+        android:id="@+id/izmenit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Изменить" />
+
+    <Button
+        android:id="@+id/udalit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Удалить" />
+
+</LinearLayout>
