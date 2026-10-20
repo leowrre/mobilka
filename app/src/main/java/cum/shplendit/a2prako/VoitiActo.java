@@ -18,50 +18,49 @@ public class VoitiActo extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.voiti); // укажите ваш layout
+        setContentView(R.layout.voiti);
 
-        // Инициализация элементов
-        editLogin = findViewById(R.id.etLogin); // замените на ваши ID
+        editLogin = findViewById(R.id.etLogin);
         editPassword = findViewById(R.id.etPassword);
         Button buttonLogin = findViewById(R.id.btnLogin);
 
-        // Инициализация базы данных
         DBHelper dbHelper = new DBHelper(this);
         database = dbHelper.getWritableDatabase();
 
-        // Обработчик кнопки входа
         buttonLogin.setOnClickListener(v -> {
             if (editLogin.getText().toString().equals("") || editPassword.getText().toString().equals("")) {
-                showDialog(3);
+                showMessage(3); // <-- Исправлено с showDialog на showMessage
             } else {
-                // ИСПОЛЬЗУЕМ параметризованный запрос для защиты от SQL-инъекций
-                String sql = "SELECT login, parol FROM user WHERE login = ? AND parol = ?";
+// 1. В запросе замените idUser на точное имя из DBeaver (например, id)
+                String sql = "SELECT id, login, parol FROM user WHERE login = ? AND parol = ?";
 
                 String[] selectionArgs = new String[] {
-                        editLogin.getText().toString(),
-                        editPassword.getText().toString()
+                        editLogin.getText().toString().trim(),
+                        editPassword.getText().toString().trim()
                 };
 
                 Cursor cursor = database.rawQuery(sql, selectionArgs);
 
                 try {
-                    if (cursor.getCount() != 0) {
-                        showDialog(1);
+                    if (cursor.getCount() != 0 && cursor.moveToFirst()) {
+
+                        // 2. ЗДЕСЬ ТОЖЕ замените "id" на точное имя столбца из DBeaver!
+                        long userId = cursor.getLong(cursor.getColumnIndexOrThrow("id"));
+
+                        // Сохраняем ID в глобальный класс
+                        app appInstance = (app) getApplicationContext();
+                        appInstance.idUserNow = userId;
+
+                        Toast.makeText(this, "Успешно! Ваш ID: " + userId, Toast.LENGTH_SHORT).show();
+
+                        // Переход в меню
                         Intent intent1 = new Intent(this, glavnoe_menu_activiti.class);
-
-                        // Передача данных (если нужно)
-                        intent1.putExtra("user_login", editLogin.getText().toString());
-
-                        // Получаем данные пользователя
-                        if (cursor.moveToFirst()) {
-                            String userLogin = cursor.getString(cursor.getColumnIndexOrThrow("login"));
-                            intent1.putExtra("logged_user", userLogin);
-                        }
-
+                        intent1.putExtra("logged_user", editLogin.getText().toString().trim());
                         startActivity(intent1);
-                        finish(); // закрыть текущую активность
+                        finish();
+
                     } else {
-                        showDialog(2);
+                        showMessage(2); // Неверный логин или пароль
                     }
                 } finally {
                     if (cursor != null && !cursor.isClosed()) {
@@ -72,7 +71,7 @@ public class VoitiActo extends AppCompatActivity {
         });
     }
 
-    // Метод для показа диалогов
+    // Метод для показа диалогов (был showMessage, а вызывали showDialog)
     private void showMessage(int type) {
         String message;
         switch (type) {

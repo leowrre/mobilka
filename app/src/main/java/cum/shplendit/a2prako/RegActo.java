@@ -80,7 +80,8 @@ public class RegActo extends AppCompatActivity {
                 Toast.makeText(RegActo.this, "Ошибка регистрации", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(RegActo.this, "Регистрация успешна! ID: " + newRowId, Toast.LENGTH_SHORT).show();
-
+                app app = (app) getApplicationContext();
+                app.idUserNow = newRowId;
                 // Переход на главный экран с передачей данных
                 Intent intent = new Intent(this, glavnoe_menu_activiti.class);
                 intent.putExtra("name", imya);

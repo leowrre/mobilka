@@ -27,17 +27,13 @@
         android:layout_marginBottom="32dp" />
 
     <!-- Поле ввода -->
-    <EditText
-        android:id="@+id/editTextName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Название"
-        android:inputType="text"
-        android:padding="16dp"
-        android:background="@android:drawable/edit_text"
-        android:layout_marginBottom="24dp" />
 
     <!-- Кнопка Добавить -->
+    <Spinner
+        android:id="@+id/guitar"
+        android:layout_width="match_parent"
+        android:layout_height="39dp" />
+
     <Button
         android:id="@+id/add"
         android:layout_width="match_parent"
